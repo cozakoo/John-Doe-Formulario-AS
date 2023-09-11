@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(168, 168, 168);
+}
+
+h2 {
+    color: #333;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.error-message {
+    color: #FF0000;
+}

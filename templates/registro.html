@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Alta de Paciente</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/registro.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Formulario de Alta de Paciente</h2>
+        <form action="/registrar" method="POST">
+            <!-- Datos Personales -->
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required value="{{ request.form.get('nombre', '') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required
+                    value="{{ request.form.get('apellido', '') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+            </div>
+
+            <div class="form-group">
+                <label for="genero">Género:</label>
+                <select id="genero" name="genero">
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+
+            <!-- Datos de Contacto -->
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required
+                    value="{{ request.form.get('email', '') }}"><br><br>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="form-group">
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+                <!-- <input type="password" id="contrasena" name="contrasena" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$" required> -->
+                <p>La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un
+                    número y un carácter especial.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmar_contrasena">Confirmar Contraseña:</label>
+                <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" required>
+                <input type="checkbox" id="consentimiento" name="consentimiento" required>
+                <label for="consentimiento">Acepto los términos y condiciones y doy mi consentimiento para el
+                    procesamiento de mis datos personales.</label>
+            </div>
+            <!-- Consentimiento -->
+            <!-- <div class="form-group">
+                <input type="checkbox" id="consentimiento" name="consentimiento" required>
+                <label for="consentimiento">Acepto los términos y condiciones y doy mi consentimiento para el
+                    procesamiento de mis datos personales.</label>
+            </div> -->
+            <!-- Mensajes de Error o Éxito -->
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-success" role="alert">
+                {{ messages[0] }}
+            </div>
+            {% endif %}
+            {% endwith %}
+            <input type="submit" value="Registrar Paciente">
+        </form>
+    </div>
+</body>
+
+</html>
