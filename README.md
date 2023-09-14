@@ -6,13 +6,11 @@ Trabajo Práctivo de la materia "Aspectos Legales de la Informatica"
 - [Requisitos](#requisitos)
 - [Instalación](#instalación)
 - [Uso](#uso)
-- [Contribución](#contribución)
 - [Licencia](#licencia)
-- [Contacto](#contacto)
 
 ## Descripción
 
-Este proyecto es una aplicación web desarrollada en Python utilizando el framework Flask y MongoDB como base de datos. Proporciona una plataforma que busca explorar la Ley de Protección de Datos Personales y la tecnología de Firma Digital en el contexto de la empresa John Doe S.A., que desarrolla y administra un *sistema hospitalario*.
+Este proyecto es una aplicación web desarrollada en Python utilizando el framework Flask y MongoDB como base de datos. Proporciona una plataforma que busca explorar la Ley de Protección de Datos Personales y la tecnología de Firma Digital en el contexto de la empresa John Doe S.A., que desarrolla y administra un **sistema hospitalario**.
 
 ## Requisitos
 
@@ -20,7 +18,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes requisitos:
 
 - Python 3.10.7
 - MongoDB 7.0
-- Docker
+- [Docker](https://www.docker.com/get-started)
 
 ## Instalación
 
@@ -33,26 +31,35 @@ Sigue estos pasos para instalar y configurar el proyecto:
 2. Ve al directorio del proyecto:
     ```bash
     cd John-Doe-Formulario-AS.git
-3. Crea un entorno virtual (se recomienda):
+3. Construye la imagen
     ```bash
-    python -m venv venv
-4. Activa el entorno virtual:
-
-
-ejecutar mongod
-
-
-
     docker build -t aspectos-legales-flask -f Dockerfile .
-docker build -t asp-leg-mongodb -f Dockerfile-mongodb .
+4. Ejecuta la aplicación en un contenedor:
+    ```bash
+    docker-compose up
+5. Accede a la aplicación en tu navegador web:
+    http://localhost:5000    
 
-$ py app/app.py
 
+## Uso
 
-# Comandos
-docker ps
+Los pacientes pueden acceder a la aplicación a través de un navegador web visitando la dirección http://localhost:5000 si están ejecutando la aplicación localmente.
 
-docker stop [id_contenedor]
+##### Registro de Pacientes:
 
-# levantar
-docker-compose up
+Los pacientes pueden completar su registro proporcionando sus datos personales, dirección de correo electrónico y contraseña en el formulario proporcionado por la aplicación.
+Después de enviar el formulario, la aplicación valida que las contraseñas coincidan y, si es así, se procede a la validación del correo electronico.
+
+##### Validación de Correo Electrónico:
+
+Luego de registrarse, los pacientes reciben un correo electrónico de validación en la dirección proporcionada.
+El correo electrónico contiene un enlace de validación único que deben ingresar a la pagina para confirmar su identidad. Si el proceso es exitoso, entonces se registra al paciente en la base de datos.
+
+##### Almacenamiento de Datos en la Base de Datos:
+
+Una vez que los pacientes validen su identidad, la aplicación marca su cuenta como validada en la base de datos.
+Los datos personales de los pacientes se almacenan de manera segura en la base de datos MongoDB.
+
+## Licencia
+
+Este proyecto está bajo [Licencia](https://github.com/cozakoo/John-Doe-Formulario-AS/blob/main/LICENSE). Consulte el archivo LICENSE para obtener más detalles.
