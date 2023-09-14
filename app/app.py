@@ -26,6 +26,7 @@ def mostrar_inicio():
 def mostrar_formulario():
     return render_template("registro.html")
 
+# validacion de captcha y re captcha y validacion del correo
 @app.route("/registrar", methods=["POST"])
 def registrar_usuario():
     nombre = request.form["nombre"]
@@ -90,3 +91,7 @@ def ver_pacientes():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+
+
+    # añadir captcha y recaptcha

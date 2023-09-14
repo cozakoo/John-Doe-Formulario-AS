@@ -43,8 +43,10 @@ ejecutar mongod
 
 
 
-docker build -t aspectos-legales-flask -f Dockerfile-flask .
+    docker build -t aspectos-legales-flask -f Dockerfile .
 docker build -t asp-leg-mongodb -f Dockerfile-mongodb .
+
+$ py app/app.py
 
 
 # Comandos

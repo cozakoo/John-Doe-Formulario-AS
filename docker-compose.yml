@@ -1,7 +1,7 @@
 version: "3"
 services:
   app:
-    image: sistema-hospitalario-flask
+    image: aspectos-legales-flask
     ports:
       - "5000:5000"
     # Otras configuraciones de la aplicación aquí
