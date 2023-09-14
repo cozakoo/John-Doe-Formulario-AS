@@ -13,12 +13,12 @@
         <form action="/registrar" method="POST">
             <!-- Datos Personales -->
             <div class="form-group">
-                <label for="nombre">Nombre:</label>
+                <label for="nombre">Nombre/s:</label>
                 <input type="text" id="nombre" name="nombre" required value="{{ request.form.get('nombre', '') }}">
             </div>
 
             <div class="form-group">
-                <label for="apellido">Apellido:</label>
+                <label for="apellido">Apellido/s:</label>
                 <input type="text" id="apellido" name="apellido" required
                     value="{{ request.form.get('apellido', '') }}">
             </div>
@@ -40,8 +40,24 @@
             <!-- Datos de Contacto -->
             <div class="form-group">
                 <label for="email">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" required
-                    value="{{ request.form.get('email', '') }}"><br><br>
+                <input type="email" id="email" name="email" required value="{{ request.form.get('email', '') }}">
+            </div>
+            <div class="form-group">
+                <label for="codigo_postal">Código Postal:</label>
+                <input type="text" id="codigo_postal" name="codigo_postal" required
+                    value="{{ request.form.get('codigo_postal', '') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="localidad">Localidad:</label>
+                <input type="text" id="localidad" name="localidad" required
+                    value="{{ request.form.get('localidad', '') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="provincia">Provincia:</label>
+                <input type="text" id="provincia" name="provincia" required
+                    value="{{ request.form.get('provincia', '') }}">
             </div>
 
             <!-- Contraseña -->
@@ -56,25 +72,40 @@
             <div class="form-group">
                 <label for="confirmar_contrasena">Confirmar Contraseña:</label>
                 <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" required>
-                <input type="checkbox" id="consentimiento" name="consentimiento" required>
-                <label for="consentimiento">Acepto los términos y condiciones y doy mi consentimiento para el
-                    procesamiento de mis datos personales.</label>
+
+            </div>
+
+            <div class="form-group">
+                <label for="historial_medico">Historial Médico:</label>
+                <textarea id="historial_medico" name="historial_medico" rows="4" cols="50"
+                    required>{{ request.form.get('historial_medico', '') }}</textarea>
             </div>
             <!-- Consentimiento -->
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <input type="checkbox" id="consentimiento" name="consentimiento" required>
-                <label for="consentimiento">Acepto los términos y condiciones y doy mi consentimiento para el
+                <label for="consentimiento">
+                    Deseo ejercer mi derecho de acceso, de conformidad con los artículos 14 y 15 de la Ley Nº 25.326,
+                    y de su Reglamentación aprobada por Decreto Nº 1558/01.
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="consentimiento" name="consentimiento" required>
+                <label for="consentimiento">Acepto los <a
+                        href="https://www.argentina.gob.ar/normativa/nacional/64790/actualizacion"
+                        target="_blank">términos y condiciones</a> y doy mi consentimiento para el
                     procesamiento de mis datos personales.</label>
-            </div> -->
+            </div>
             <!-- Mensajes de Error o Éxito -->
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <div class="alert alert-success" role="alert">
-                {{ messages[0] }}
+                <p id="mensaje">{{ messages[0] }}</p>
             </div>
             {% endif %}
             {% endwith %}
             <input type="submit" value="Registrar Paciente">
+            <br><br><br>
+            <a href="{{ url_for('mostrar_inicio') }}">Volver al menu principal</a>
         </form>
     </div>
 </body>

@@ -1,0 +1,11 @@
+.table-bordered {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #000; /* Define el grosor y el color del borde */
+    padding: 8px; /* Añade un espaciado interno para las celdas */
+    text-align: left; /* Alinea el texto a la izquierda en las celdas */
+}

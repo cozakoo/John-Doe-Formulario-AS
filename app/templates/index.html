@@ -1,0 +1,40 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Redirección a una URL</title>
+</head>
+<body>
+    <h2>Bienvenido</h2>
+    <p>Presiona el botón para ser redirigido a una URL:</p>
+    <a href="{{ url_for('mostrar_formulario') }}">Alta paciente</a>
+    <a href="{{ url_for('ver_pacientes') }}">ver PACIENTES</a>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Hospitalario</title>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido al Sistema Hospitalario</h1>
+        <nav>
+            <ul>
+                <li><a class href="{{ url_for('mostrar_formulario') }}">Alta paciente</a></li>
+                <li><a href="{{ url_for('ver_pacientes') }}">ver PACIENTES</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Contenido Principal</h2>
+        <p>Bienvenido a mi sitio web. Este es el contenido principal de la página.</p>
+    </main>
+    
+    <footer>
+        <p>Derechos de autor © 2023 Mi Sitio Web</p>
+    </footer>
+</body>
+</html>

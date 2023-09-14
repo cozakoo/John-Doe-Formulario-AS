@@ -37,3 +37,20 @@ Sigue estos pasos para instalar y configurar el proyecto:
     ```bash
     python -m venv venv
 4. Activa el entorno virtual:
+
+
+ejecutar mongod
+
+
+
+docker build -t aspectos-legales-flask -f Dockerfile-flask .
+docker build -t asp-leg-mongodb -f Dockerfile-mongodb .
+
+
+# Comandos
+docker ps
+
+docker stop [id_contenedor]
+
+# levantar
+docker-compose up

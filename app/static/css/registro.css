@@ -5,6 +5,7 @@ body {
 
 h2 {
     color: #333;
+    text-align: center;
 }
 
 .container {
@@ -36,4 +37,12 @@ input[type="checkbox"] {
 
 .error-message {
     color: #FF0000;
+}
+
+#historial_medico{
+    resize: none;
+}
+
+#mensaje{
+    color: #800505;
 }
