@@ -89,16 +89,6 @@ A continuación se proporcionaran algunos ejemplos de uso para que los pacientes
 
 4. Deberías ser redirigido a la aplicación hospitalaria y ver un mensaje de éxito que confirma que tu cuenta ha sido validada correctamente.
 
-**Ejemplo 3: Verificación de Datos en la Base de Datos**
-
-1. Después de la validación, inicia sesión en la aplicación con tu dirección de correo electrónico y contraseña.
-
-2. Una vez que hayas iniciado sesión, puedes acceder a tu perfil o página de usuario, donde deberías ver tus datos personales, como nombre, apellido y dirección de correo electrónico.
-
-3. Además, los pacientes pueden verificar que sus datos se almacenan correctamente en la base de datos al acceder al sistema de gestión de la base de datos MongoDB o mediante consultas a la base de datos a través de la aplicación para confirmar que sus datos se han registrado y validado correctamente.
-<!-- 
-Estos ejemplos proporcionan una visión general de cómo los pacientes pueden interactuar con la aplicación, registrarse, completar la validación por correo electrónico y verificar que sus datos se almacenan en la base de datos. Recuerda que estos son ejemplos simplificados y que tu aplicación real debe proporcionar una experiencia de usuario completa y segura. -->
-
 ## Licencia
 
 Este proyecto está bajo [Licencia](https://github.com/cozakoo/John-Doe-Formulario-AS/blob/main/LICENSE). Consulte el archivo LICENSE para obtener más detalles.
