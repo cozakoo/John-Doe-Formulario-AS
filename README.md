@@ -33,7 +33,7 @@ Sigue estos pasos para instalar y configurar el proyecto:
     cd John-Doe-Formulario-AS.git
 3. Construye la imagen
     ```bash
-    docker build -t aspectos-legales-flask -f Dockerfile .
+    docker build -t sistema-hospitalario-flask -f Dockerfile .
 4. Ejecuta la aplicación en un contenedor:
     ```bash
     docker-compose up
@@ -52,13 +52,52 @@ Después de enviar el formulario, la aplicación valida que las contraseñas coi
 
 ##### Validación de Correo Electrónico:
 
-Luego de registrarse, los pacientes reciben un correo electrónico de validación en la dirección proporcionada.
-El correo electrónico contiene un enlace de validación único que deben ingresar a la pagina para confirmar su identidad. Si el proceso es exitoso, entonces se registra al paciente en la base de datos.
+Luego de completar el formulario, los pacientes reciben un correo electrónico de validación en la dirección proporcionada.
+El correo electrónico contiene un codigo numerico que deben ingresar a la pagina para confirmar su identidad. Si el proceso es exitoso, entonces se registra al paciente en la base de datos.
 
 ##### Almacenamiento de Datos en la Base de Datos:
 
-Una vez que los pacientes validen su identidad, la aplicación marca su cuenta como validada en la base de datos.
+Una vez que los pacientes validen su identidad, el usuario quedara como validada en la base de datos.
 Los datos personales de los pacientes se almacenan de manera segura en la base de datos MongoDB.
+
+## Ejemplos
+
+A continuación se proporcionaran algunos ejemplos de uso para que los pacientes puedan interactuar con la aplicación hospitalaria, ingresar sus datos, completar el proceso de validación por correo electrónico y verificar que sus datos se almacenan correctamente en la base de datos.
+
+**Ejemplo 1: Registro de un Nuevo Paciente**
+
+1. Abre un navegador web y ve a `http://localhost:5000`.
+
+2. En la página de inicio, encontrarás la pagina princial. A continuación seleccionar "Alta de paciente". Completa los campos requeridos con los datos personales, dirección de correo electrónico y contraseña. A continuación, un ejemplo de cómo se vería el formulario:
+
+   - Nombre: Juan
+   - Apellido: Pérez
+   - Correo Electrónico: juan@example.com
+   - Contraseña: q4dgv*ZF
+   - Confirmar Contraseña: q4dgv*ZF
+   - [El resto de los campos]
+3. Haz clic en el botón "Registrar Paciente".
+4. Deberías ver un mensaje de éxito que indica que se ha enviado un correo de validación a tu dirección de correo electrónico.
+
+**Ejemplo 2: Validación por Correo Electrónico**
+
+1. Ve a la bandeja de entrada de tu correo electrónico.
+
+2. Deberías recibir un correo electrónico de validación con un codigo numerico único. El correo electrónico puede tener un asunto como "Valida tu cuenta en el Sistema Hospitalario".
+
+3. Haz clic en el enlace de validación dentro del correo electrónico.
+
+4. Deberías ser redirigido a la aplicación hospitalaria y ver un mensaje de éxito que confirma que tu cuenta ha sido validada correctamente.
+
+**Ejemplo 3: Verificación de Datos en la Base de Datos**
+
+1. Después de la validación, inicia sesión en la aplicación con tu dirección de correo electrónico y contraseña.
+
+2. Una vez que hayas iniciado sesión, puedes acceder a tu perfil o página de usuario, donde deberías ver tus datos personales, como nombre, apellido y dirección de correo electrónico.
+
+3. Además, los pacientes pueden verificar que sus datos se almacenan correctamente en la base de datos al acceder al sistema de gestión de la base de datos MongoDB o mediante consultas a la base de datos a través de la aplicación para confirmar que sus datos se han registrado y validado correctamente.
+<!-- 
+Estos ejemplos proporcionan una visión general de cómo los pacientes pueden interactuar con la aplicación, registrarse, completar la validación por correo electrónico y verificar que sus datos se almacenan en la base de datos. Recuerda que estos son ejemplos simplificados y que tu aplicación real debe proporcionar una experiencia de usuario completa y segura. -->
 
 ## Licencia
 

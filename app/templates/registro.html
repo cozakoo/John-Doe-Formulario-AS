@@ -63,8 +63,9 @@
             <!-- Contraseña -->
             <div class="form-group">
                 <label for="contrasena">Contraseña:</label>
-                <input type="password" id="contrasena" name="contrasena" required>
-                <!-- <input type="password" id="contrasena" name="contrasena" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$" required> -->
+                <!-- <input type="password" id="contrasena" name="contrasena" required> -->
+                <input type="password" id="contrasena" name="contrasena"
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$" required>
                 <p>La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un
                     número y un carácter especial.</p>
             </div>
@@ -95,6 +96,13 @@
                         target="_blank">términos y condiciones</a> y doy mi consentimiento para el
                     procesamiento de mis datos personales.</label>
             </div>
+
+            <div class="form-group">
+                <label for="codigo_verificacion">Código de Verificación:</label>
+                <input type="text" id="codigo_verificacion" name="codigo_verificacion">
+                <p>Para obtener el codigo tiene que hacer click en el boton "Registrar Paciente".</p>
+            </div>
+
             <!-- Mensajes de Error o Éxito -->
             {% with messages = get_flashed_messages() %}
             {% if messages %}
