@@ -1,9 +1,12 @@
 version: "3"
 services:
   app:
-    image: sistema-hospitalario-flask
+    # image: sistema-hospitalario-flask
+    build: . 
     ports:
       - "5000:5000"
+    volumes:
+      - ./app:/app
     # Otras configuraciones de la aplicación aquí
 
   mongodb:
