@@ -11,6 +11,8 @@ services:
 
   mongodb:
     image: mongo:latest
+    ports: 
+      - "27018:27017"
     hostname: test_mongodb
     environment:
       - MONGO_INITDB_DATABASE=asp_leg
