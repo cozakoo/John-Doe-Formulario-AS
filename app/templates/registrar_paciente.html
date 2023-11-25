@@ -11,8 +11,12 @@
     <h1></h1>
     <div class="container">
         <h2>Formulario de Alta de Paciente</h2>
-        <form action="/registrar" method="POST">
+        <form action="/registrar_usuario" method="POST">
             <!-- Datos Personales -->
+            <div class="form-group">
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" name="dni" pattern="[0-9]+" title="Solo se permiten números" required value="{{ request.form.get('dni', '') }}">
+            </div>
             <div class="form-group">
                 <label for="nombre">Nombre/s:</label>
                 <input type="text" id="nombre" name="nombre" required value="{{ request.form.get('nombre', '') }}">
@@ -64,17 +68,14 @@
             <!-- Contraseña -->
             <div class="form-group">
                 <label for="contrasena">Contraseña:</label>
-                <!-- <input type="password" id="contrasena" name="contrasena" required> -->
-                <input type="password" id="contrasena" name="contrasena"
-                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$" required>
-                <p>La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un
+                <input type="password" id="contrasena" name="contrasena" required>
+                <p>Se recomienda que contenga al menos 8 caracteres, una letra mayúscula, una letra minúscula, un
                     número y un carácter especial.</p>
             </div>
 
             <div class="form-group">
                 <label for="confirmar_contrasena">Confirmar Contraseña:</label>
                 <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" required>
-
             </div>
 
             <div class="form-group">
@@ -114,7 +115,7 @@
             {% endwith %}
             <input type="submit" value="Registrar Paciente">
             <br><br><br>
-            <a href="{{ url_for('mostrar_inicio') }}">Volver al menu principal</a>
+            <a href="{{ url_for('index') }}">Volver al menu principal</a>
         </form>
     </div>
 </body>

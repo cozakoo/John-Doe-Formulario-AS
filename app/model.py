@@ -1,7 +1,8 @@
 from datetime import datetime
 
 class Paciente:
-    def __init__(self, nombre, apellido, email, contrasena, fecha_nacimiento,localidad, genero,codigo_postal,provincia, historial):    
+    def __init__(self, dni, nombre, apellido, email, contrasena, fecha_nacimiento,localidad, genero,codigo_postal,provincia, historial):    
+        self.dni = dni
         self.nombre = nombre
         self.apellido = apellido
         self.email = email

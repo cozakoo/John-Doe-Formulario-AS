@@ -13,6 +13,7 @@
     <table class="table-bordered">
         <thead>
             <tr>
+                <th class="table-cell">Dni</th>
                 <th class="table-cell">Nombre</th>
                 <th class="table-cell">Apellido</th>
                 <th class="table-cell">Correo Electrónico</th>
@@ -20,8 +21,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for dato in datos %}
+            {% for dato in pacientes %}
             <tr>
+                <td class="table-cell">{{ dato.dni }}</td>
                 <td class="table-cell">{{ dato.nombre }}</td>
                 <td class="table-cell">{{ dato.apellido }}</td>
                 <td class="table-cell">{{ dato.email }}</td>
@@ -32,7 +34,7 @@
     </table>
 
     <br><br><br>
-    <a href="{{ url_for('mostrar_inicio') }}">Volver al menu principal</a>
+    <a href="{{ url_for('index') }}">Volver al menu principal</a>
 
 </body>
 

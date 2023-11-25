@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ... (tus metadatos y enlaces CSS) -->
+  </head>
+  <body>
+    {% with messages = get_flashed_messages(with_categories = true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <h2>Crear Usuario</h2>
+    <form method="post" action="{{ url_for('create_user') }}">
+      <!-- Campos de usuario y contraseña -->
+      <label for="username">Usuario:</label>
+      <input type="text" name="username" id="username" placeholder="Usuario" required />
+
+      <label for="password">Contraseña:</label>
+      <input type="password" name="password" id="password" placeholder="Contraseña" required />
+
+      <!-- Campo de selección para el tipo de usuario -->
+      <label for="user_type">Tipo de Usuario:</label>
+      <select name="user_type" id="user_type" required>
+        <option value="admin">Administrador</option>
+        <option value="secretary">Secretario</option>
+        <option value="patient">Paciente</option>
+      </select>
+
+      <!-- Botón para crear usuario -->
+      <button type="submit">Crear Usuario</button>
+    </form>
+  </body>
+</html>

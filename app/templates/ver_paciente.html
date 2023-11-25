@@ -1,0 +1,24 @@
+<!-- ver_paciente.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Datos del Paciente</title>
+  </head>
+
+  <body>
+    <h1>Datos del Paciente</h1>
+    <p>Dni: {{ paciente.dni }}</p>
+    <p>Nombre: {{ paciente.nombre }}</p>
+    <p>Apellido: {{ paciente.apellido }}</p>
+    <p>Email: {{ paciente.email }}</p>
+    <p>Fecha Nacimiento: {{ paciente.fecha_nacimiento }}</p>
+    <p>Localidad: {{ paciente.localidad }}</p>
+    <p>Provincia: {{ paciente.provincia }}</p>
+    <p>Genero {{ paciente.genero }}</p>
+    <p>Historial: {{ paciente.historial }}</p>
+    <p>Apellido: {{ paciente.apellido }}</p>
+    <a href="{{ url_for('index') }}">Volver al menu principal</a>
+
+  </body>
+</html>
