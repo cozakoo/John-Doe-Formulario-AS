@@ -89,6 +89,8 @@ A continuación se proporcionaran algunos ejemplos de uso para que los pacientes
 
 4. Deberías ser redirigido a la aplicación hospitalaria y ver un mensaje de éxito que confirma que tu cuenta ha sido validada correctamente.
 
+5. Si esta todo correto se te enviara un correo informando el nombre y contraseña para poder ingresar al sistema hospitalario
+
 ## Licencia
 
 Este proyecto está bajo [Licencia](https://github.com/cozakoo/John-Doe-Formulario-AS/blob/main/LICENSE). Consulte el archivo LICENSE para obtener más detalles.
