@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <h1 class="is-size-1" style="text-align: center;">Receta Médica</h1>
+
+    <p>Dni: {{ paciente.dni }}</p>
+    <p>Nombre: {{ paciente.nombre }}</p>
+    <p>Apellido: {{ paciente.apellido }}</p>
+    <p>Email: {{ paciente.email }}</p>
+    <p>Fecha Nacimiento: {{ paciente.fecha_nacimiento }}</p>
+    <p>Historial: {{ paciente.historial }}</p>
+
+    <!-- Agrega campos para la receta médica, incluyendo campos ocultos para los datos del paciente -->
+    <form action="/generate_pdf" method="POST" enctype="multipart/form-data">
+        <div class="label">
+            <label for="medicamento">Medicamento</label><br />
+            <textarea style="resize: none;" class="text" id="medicamento" name="medicamento" rows="4" cols="50" required></textarea><br>
+        </div>
+
+        <!-- Campos ocultos para los datos del paciente -->
+        <input type="hidden" name="dni" value="{{ paciente.dni }}">
+        <input type="hidden" name="nombre" value="{{ paciente.nombre }}">
+        <input type="hidden" name="apellido" value="{{ paciente.apellido }}">
+        <input type="hidden" name="email" value="{{ paciente.email }}">
+        <input type="hidden" name="fecha_nacimiento" value="{{ paciente.fecha_nacimiento }}">
+        <input type="hidden" name="historial" value="{{ paciente.historial }}">
+
+        <input class="button is-primary" type="submit" value="Generar PDF" />
+    </form>
+</body>
+</html>

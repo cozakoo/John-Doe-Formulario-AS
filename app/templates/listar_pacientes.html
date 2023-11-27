@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Datos pacientes</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/ver_datos.css">
-</head>
+    <link rel="stylesheet" type="text/css" href="/static/css/ver_datos.css" />
+  </head>
 
-<body>
+  <body>
     <h1>Datos de los pacientes</h1>
 
     <table class="table-bordered">
-        <thead>
-            <tr>
-                <th class="table-cell">Dni</th>
-                <th class="table-cell">Nombre</th>
-                <th class="table-cell">Apellido</th>
-                <th class="table-cell">Correo Electrónico</th>
-                <th class="table-cell">Localidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for dato in pacientes %}
-            <tr>
-                <td class="table-cell">{{ dato.dni }}</td>
-                <td class="table-cell">{{ dato.nombre }}</td>
-                <td class="table-cell">{{ dato.apellido }}</td>
-                <td class="table-cell">{{ dato.email }}</td>
-                <td class="table-cell">{{ dato.localidad }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th class="table-cell">Dni</th>
+          <th class="table-cell">Nombre</th>
+          <th class="table-cell">Apellido</th>
+          <th class="table-cell">Correo Electrónico</th>
+          <th class="table-cell">Localidad</th>
+          <th class="table-cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dato in pacientes %}
+          <tr>
+            <td class="table-cell">{{ dato.dni }}</td>
+            <td class="table-cell">{{ dato.nombre }}</td>
+            <td class="table-cell">{{ dato.apellido }}</td>
+            <td class="table-cell">{{ dato.email }}</td>
+            <td class="table-cell">{{ dato.localidad }}</td>
+            <td class="table-cell">
+              <a class="button is-primary" href="{{ url_for('recetaMedica', paciente_id = dato.dni) }}">Crear Receta Medica</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
 
-    <br><br><br>
+    <br /><br /><br />
     <a href="{{ url_for('index') }}">Volver al menu principal</a>
-
-</body>
-
+  </body>
 </html>
