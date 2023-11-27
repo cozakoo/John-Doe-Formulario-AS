@@ -3,33 +3,47 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generación de PDF</title>
 </head>
 <body>
     <h1 class="is-size-1" style="text-align: center;">Receta Médica</h1>
 
-    <p>Dni: {{ paciente.dni }}</p>
-    <p>Nombre: {{ paciente.nombre }}</p>
-    <p>Apellido: {{ paciente.apellido }}</p>
-    <p>Email: {{ paciente.email }}</p>
-    <p>Fecha Nacimiento: {{ paciente.fecha_nacimiento }}</p>
-    <p>Historial: {{ paciente.historial }}</p>
-
-    <!-- Agrega campos para la receta médica, incluyendo campos ocultos para los datos del paciente -->
     <form action="/generate_pdf" method="POST" enctype="multipart/form-data">
-        <div class="label">
-            <label for="medicamento">Medicamento</label><br />
-            <textarea style="resize: none;" class="text" id="medicamento" name="medicamento" rows="4" cols="50" required></textarea><br>
+        <!-- Datos del paciente -->
+        <div>
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" required>
+        </div>
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div>
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+        </div>
+        <div>
+            <label for="historial">Historial:</label>
+            <textarea id="historial" name="historial" rows="4" cols="50" required></textarea>
         </div>
 
-        <!-- Campos ocultos para los datos del paciente -->
-        <input type="hidden" name="dni" value="{{ paciente.dni }}">
-        <input type="hidden" name="nombre" value="{{ paciente.nombre }}">
-        <input type="hidden" name="apellido" value="{{ paciente.apellido }}">
-        <input type="hidden" name="email" value="{{ paciente.email }}">
-        <input type="hidden" name="fecha_nacimiento" value="{{ paciente.fecha_nacimiento }}">
-        <input type="hidden" name="historial" value="{{ paciente.historial }}">
+        <!-- Receta médica -->
+        <div>
+            <label for="medicamento">Medicamento:</label>
+            <textarea id="medicamento" name="medicamento" rows="4" cols="50" required></textarea>
+        </div>
 
-        <input class="button is-primary" type="submit" value="Generar PDF" />
+        <div>
+            <input type="submit" value="Generar PDF">
+        </div>
     </form>
 </body>
 </html>

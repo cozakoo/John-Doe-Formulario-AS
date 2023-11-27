@@ -1,11 +1,13 @@
+import cryptography
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import session, g, send_file, make_response
 
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from PyPDF2 import PdfWriter, PdfReader
+
 from pymongo import MongoClient
 from model import Paciente
-import smtplib
 import random
 import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,10 +16,10 @@ from io import BytesIO
 import os
 from reportlab.pdfgen import canvas
 
-
-
+from funciones import *
 
 app = Flask(__name__)
+
 app.secret_key = "clave_secreta"
 client = MongoClient(host='test_mongodb', port=27017, username='root', password='pass', authSource="admin")
 db = client['asp_leg']
@@ -200,60 +202,7 @@ def registrar_usuario():
     # return redirect(url_for("insertar"))
     return redirect(url_for('dashboard'))
 
-def enviar_correo_registro(destinatario,username, password ):
-    remitente = "martinarcosvargas2@gmail.com"  # Cambia esto a tu dirección de correo electrónico de Gmail
-    contraseña = "gdvmpiixvmrjofhl"
-    # URL de inicio de sesión
-    url_login = "http://127.0.0.1:5000/login"
-    #Partes del correo
-    mensaje = MIMEMultipart()
-    mensaje["From"] = remitente
-    mensaje["To"] = destinatario
-    mensaje["Subject"] = "¡Usuario creado con éxito en el sistema hospitalario!"
-    saludo = f"Hola!"
 
-    cuerpo_mensaje = (
-        f"{saludo}\n\n"
-        "¡Bienvenido a nuestro sistema hospitalario!\n\n"
-        f"Tu usuario para ingresar es: {username}\n"
-        f"Tu contraseña es: {password}\n\n"
-        f"Puedes iniciar sesión haciendo clic en el siguiente enlace:\n"
-        f"{url_login}\n\n"
-        "No responder a este correo.\n"
-        "Gracias y que tengas un buen día."
-    )
-    mensaje.attach(MIMEText(cuerpo_mensaje, "plain"))
-
-    try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(remitente, contraseña)
-        server.sendmail(remitente, destinatario, mensaje.as_string())
-        server.quit()
-    except Exception as e:
-        print(f"Error al enviar el correo electrónico: {str(e)}")
-
-def enviar_correo_validacion(destinatario, codigo_verificacion):
-    remitente = "martinarcosvargas2@gmail.com"  # Cambia esto a tu dirección de correo electrónico de Gmail
-    contraseña = "gdvmpiixvmrjofhl"
-
-    #Partes del correo
-    mensaje = MIMEMultipart()
-    mensaje["From"] = remitente
-    mensaje["To"] = destinatario
-    mensaje["Subject"] = "Valida tu cuenta en el Sistema Hospitalario"
-
-    cuerpo_mensaje = f"Tu código de verificación es: {codigo_verificacion}"
-    mensaje.attach(MIMEText(cuerpo_mensaje, "plain"))
-
-    try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(remitente, contraseña)
-        server.sendmail(remitente, destinatario, mensaje.as_string())
-        server.quit()
-    except Exception as e:
-        print(f"Error al enviar el correo electrónico: {str(e)}")
 
 @app.route("/listar_pacientes")
 def listar_pacientes():
@@ -286,121 +235,48 @@ def recetaMedica(paciente_id):
 
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
-    # Datos del paciente desde los campos ocultos
-    dni = request.form['dni']
-    nombre = request.form['nombre']
-    apellido = request.form['apellido']
-    email = request.form['email']
-    fecha_nacimiento = request.form['fecha_nacimiento']
-    # Obtener los datos del formulario
-    medicamento = request.form['medicamento']
+    # Obtener datos del paciente desde el formulario
+    paciente_data = {
+        'dni': request.form['dni'],
+        'nombre': request.form['nombre'],
+        'apellido': request.form['apellido'],
+        'email': request.form['email'],
+        'fecha_nacimiento': request.form['fecha_nacimiento'],
+        'historial': request.form['historial'],
+    }
 
     # Crear el PDF en memoria
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     
-    # Agregar la cabecera al PDF (centrado y en negrita)
-    pdf.setFont("Helvetica-Bold", 16)
-    text = "Receta Médica"
-    text_width = pdf.stringWidth(text, "Helvetica-Bold", 16)
-    pdf.drawCentredString(300, 750, text)
-
-    # Agregar el cuerpo al PDF con la información del usuario y el texto ingresado
+    # Agregar la información del paciente al PDF
     pdf.setFont("Helvetica", 12)
-    pdf.drawString(100, 720, f'Dni: {dni}')
-    pdf.drawString(100, 690, f"Nombre y Apellido: {nombre} {apellido}")
-    pdf.drawString(100, 660, f'nacimiento: {fecha_nacimiento}')
-    pdf.drawString(100, 630, f'email: {email}')
-    pdf.drawString(100, 600, f'Receta medica')
+    pdf.drawString(100, 750, f'Dni: {paciente_data["dni"]}')
+    pdf.drawString(100, 720, f"Nombre y Apellido: {paciente_data['nombre']} {paciente_data['apellido']}")
+    pdf.drawString(100, 690, f'nacimiento: {paciente_data["fecha_nacimiento"]}')
+    pdf.drawString(100, 660, f'email: {paciente_data["email"]}')
+    pdf.drawString(100, 630, f'Historial: {paciente_data["historial"]}')
+    
+    # Agregar la receta médica al PDF (cambiar según la ubicación deseada)
+    medicamento = request.form['medicamento']
+    pdf.drawString(100, 600, f'Receta médica')
     pdf.drawString(130, 570, medicamento)
+
     # Guardar el estado del PDF y cerrar el objeto PDF
     pdf.showPage()
     pdf.save()
-    
+
     # Configurar la respuesta para devolver el PDF en lugar de guardarlo en un archivo
     buffer.seek(0)
-    
     response = make_response(buffer.read())
     buffer.close()
 
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'inline; filename=receta_medica.pdf'
-    
-    return redirect(url_for('proceso', pdf_filename=response))
 
-@app.route('/proceso')
-def proceso():
-    return render_template("firmaDigital.html")
+    # Firmar el PDF
+    return response
 
-import datetime
-
-
-@app.route('/procesar', methods=['POST'])
-def procesar():
-    # Obtener datos del formulario
-    firma = request.files['firma']
-    contraseña = request.form['palabra_secreta']
-    nombre_archivo_pdf = request.form['pdf']  # Este campo se agregó como un campo oculto
-    pdf = request.form['pdf']  # Este campo se agregó como un campo oculto
-    # Hacer algo con los datos obtenidos
-    print("Firma:", firma.filename)
-    print("Contraseña:", contraseña)
-    print("Nombre Archivo PDF:", nombre_archivo_pdf)
-    
-    archivo_pdf_para_enviar_al_cliente = io.BytesIO()
-    try:
-        datau, datas = firmar(contraseña, firma, nombre_archivo_pdf)
-    except ValueError as e:
-        return "Error firmando: " + str(e) + " . Se recomienda revisar la contraseña y el certificado"
-    # Guardar el archivo PDF en un objeto BytesIO
-    # archivo_pdf_para_enviar_al_cliente.write(pdf_original)
-    # archivo_pdf_para_enviar_al_cliente.write(firma)
-    # archivo_pdf_para_enviar_al_cliente.seek(0)
-    return "firmando:"
-
-import io
-from PyPDF2 import PdfReader, PdfWriter
-
-def firmar(password, certificado, pdf):
-    # Aquí debes implementar la lógica para firmar el PDF con el certificado
-    # y devolver el PDF original y la firma
-    # Ejemplo simple: agregar una marca de agua con la contraseña al PDF
-    pdf_reader = PdfReader(io.BytesIO(pdf))
-    pdf_writer = PdfWriter()
-    
-    for page_num in range(len(pdf_reader.pages)):
-        page = pdf_reader.pages[page_num]  # Obtener el objeto PageObject real
-
-        # Crear una página de marca de agua
-        pagina_de_marca_de_agua = pdf_reader.pages[0]  # Utilizar la primera página como marca de agua
-        page.merge_page(pagina_de_marca_de_agua)
-
-        pdf_writer.add_page(page)  # Utilizar add_page en lugar de addPage
-
-    # Obtener el contenido del PDF firmado
-    pdf_output = io.BytesIO()
-    pdf_writer.write(pdf_output)
-
-    # Simular una firma utilizando el certificado (deberías adaptar esto a tu lógica real)
-    # firma = firmar_con_certificado(certificado, pdf_output.getvalue(), password)
-
-    return pdf_output.getvalue(), "aaa"
-
-
-# from cryptography.hazmat.primitives import serialization
-# from cryptography.hazmat.primitives.serialization import pkcs12
-
-# def firmar_con_certificado(certificado, contenido_pdf, password):
-#     # Convertir la contraseña a bytes
-#     certificado = os.path.abspath(certificado)
-#     password_bytes = password.encode('utf-8')
-
-#     # Cargar el archivo PKCS12
-#     # Obtener la clave privada y el certificado del archivo PKCS#12
-#     # Firmar el contenido del PDF (simulación)
-
-#     # Devolver la firma (simulación)
-#     return b'SignaturePlaceholder'
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
