@@ -9,10 +9,12 @@ cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
+config==0.5.1
 cryptography==41.0.7
 dnspython==2.4.2
 endesive==2.16
 Flask==2.3.3
+Flask-Login==0.6.3
 Flask-WTF==1.2.1
 idna==3.6
 itsdangerous==2.1.2
@@ -28,6 +30,7 @@ pymongo==4.5.0
 PyNaCl==1.5.0
 pyOpenSSL==23.3.0
 PyPDF2==3.0.1
+python-decouple==3.8
 pytz==2023.3.post1
 reportlab==4.0.7
 requests==2.31.0

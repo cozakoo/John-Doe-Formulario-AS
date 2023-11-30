@@ -1,8 +1,8 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- ... (tus metadatos y enlaces CSS) -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/login.css') }}" />
   </head>
+
   <body>
     {% with messages = get_flashed_messages(with_categories = true) %}
       {% if messages %}
@@ -11,25 +11,29 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <h2>Crear Usuario</h2>
-    <form method="post" action="{{ url_for('create_user') }}">
-      <!-- Campos de usuario y contraseña -->
-      <label for="username">Usuario:</label>
-      <input type="text" name="username" id="username" placeholder="Usuario" required />
 
-      <label for="password">Contraseña:</label>
-      <input type="password" name="password" id="password" placeholder="Contraseña" required />
+    <form method="post" action="{{ url_for('create_user') }}" class="Form">
+      <h1 class="Form-title">Creación de usuario</h1>
+      <p class="Form-description">Sistema Hospitalario</p>
+      <div class="Form-fields">
+        <input type="text" id="email" class="ControlInput ControlInput--email" name="username" required />
+        <label for="email" class="Control-label Control-label--email">Username</label>
+        <div class="Control-requirements Control-requirements--email">Debe ser un usuario valido</div>
+        <label for="show-password" class="Control-label Control-label--showPassword"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" class="svg-toggle-password" title="Toggle Password Security"></svg></label>
 
-      <!-- Campo de selección para el tipo de usuario -->
-      <label for="user_type">Tipo de Usuario:</label>
-      <select name="user_type" id="user_type" required>
-        <option value="admin">Administrador</option>
-        <option value="secretary">Secretario</option>
-        <option value="patient">Paciente</option>
-      </select>
+        <input type="password" id="password" autocomplete="off" name="password" autocapitalize="off" autocorrect="off" required class="ControlInput ControlInput--password" />
 
-      <!-- Botón para crear usuario -->
-      <button type="submit">Crear Usuario</button>
+        <label for="password" class="Control-label Control-label--password">Password</label>
+
+        <label for="user_type" class="Control-label">Tipo de Usuario</label>
+        <select name="user_type" id="user_type" required>
+          <option value="admin">Administrador</option>
+          <option value="secretary">Secretario</option>
+          <option value="medic">Medico</option>
+        </select>
+        <br />
+        <button type="submit" class="Button Form-submit">Crear Usuario</button>
+      </div>
     </form>
   </body>
 </html>

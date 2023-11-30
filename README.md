@@ -40,8 +40,16 @@ Sigue estos pasos para instalar y configurar el proyecto:
 5. Accede a la aplicación en tu navegador web:
     http://localhost:5000    
 
+## Sugerencia
+
+Para poder utilizar el certificado.p12 la contraseña es "admin"
+
+Una vez creado el usuario "admin" dar de alta al médico, secretario
 
 ## Uso
+
+Login
+Username:"admin" y Password: "admin"
 
 Los pacientes pueden acceder a la aplicación a través de un navegador web visitando la dirección http://localhost:5000 si están ejecutando la aplicación localmente.
 

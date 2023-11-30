@@ -10,25 +10,28 @@ from model import Paciente
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import io , random, bcrypt, os
-
 from funciones import *
 
 app = Flask(__name__)
-
 app.secret_key = "clave_secreta"
-# Conexion con Docker
-# client = MongoClient(host='test_mongodb', port=27017, username='root', password='pass', authSource="admin")
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# Conexion con Docker
+client = MongoClient(host='test_mongodb', port=27017, username='root', password='pass', authSource="admin")
 # Conexion local
-client = MongoClient(host='localhost', port=27017)
+# client = MongoClient(host='localhost', port=27017)
 
 db = client['asp_leg']
 mis_usuarios = db["usuarios"]
 mis_pacientes = db['pacientes']
+
 codigos_verificacion = {}
+
 # Para almacenar una contraseña de manera segura
 password = "contrasena_secreta".encode('utf-8')
 hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
 correo_enviado = False
 codigo_verificacion_ingresado = ""
 codigo_verificacion = ""
@@ -63,7 +66,6 @@ def login():
         else:
             # Si el usuario no existe o las credenciales no coinciden, muestra un mensaje de error
             flash('Usuario o contraseña incorrectos', 'error')
-
     return render_template('auth/login.html')
 
 @app.route('/dashboard')
@@ -114,15 +116,12 @@ def create_user():
             'user_type': user_type
         })
         flash('Usuario creado con éxito', 'success')
-        return redirect(url_for('login'))
-
+        return redirect(url_for('dashboard'))
     return render_template('create_user.html')
-
 
 @app.route('/registrar_paciente')
 def registrar_paciente():
-        # Aquí puedes agregar la lógica necesaria para el registro de pacientes
-    return render_template('registrar_paciente.html')  # Reemplaza con tu propia plantilla
+    return render_template('registrar_paciente.html')
 
 # validacion de captcha y re captcha y validacion del correo
 @app.route("/registrar_usuario", methods=["POST"])
@@ -146,7 +145,18 @@ def registrar_usuario():
     # si las contraseñas no coinciden
     if contrasena != confirmar_contrasena:
         flash("Las contraseñas no coinciden. Inténtalo de nuevo.", "error")
-        return render_template("registrar_paciente.html", nombre=nombre, apellido=apellido, fecha_nacimiento=fecha_nacimiento, genero = genero, email=email, codigo_postal = codigo_postal, localidad=localidad, provincia=provincia, historial=historial)
+        return render_template(
+            "registrar_paciente.html",
+            nombre=nombre, 
+            apellido=apellido, 
+            fecha_nacimiento=fecha_nacimiento, 
+            genero = genero, 
+            email=email, 
+            codigo_postal = codigo_postal, 
+            localidad=localidad, 
+            provincia=provincia, 
+            historial=historial
+            )
 
     datos_formulario = {
         'dni' : dni,
@@ -193,7 +203,6 @@ def registrar_usuario():
             'user_type': 'patient',
             'dni' : dni
         })
-        
         enviar_correo_registro(email, nombre_usuario, contrasena)
         flash("Paciente registrado con éxito, se le ha enviado un correo al paciente", "success")
 
@@ -201,7 +210,6 @@ def registrar_usuario():
         flash(f"Error al registrar al paciente: {str(e)}", "error")
     # return redirect(url_for("insertar"))
     return redirect(url_for('dashboard'))
-
 
 
 @app.route("/listar_pacientes")
@@ -221,12 +229,11 @@ def listar_pacientes():
             return render_template('ver_paciente.html', paciente=paciente)
 
     #Si el usuario es admin o secretario, muestra la lista completa de pacientes
-    if user_type in ['admin', 'secretary']:
+    if user_type in ['admin', 'secretary', 'medic']:
         pacientes = mis_pacientes.find({})
         return render_template('listar_pacientes.html', pacientes=pacientes)
-
-    return render_template('dashboard')
-
+    
+    return render_template('dashboard.html')
 
 @app.route('/recetaMedica/<paciente_id>')
 def recetaMedica(paciente_id):
@@ -242,12 +249,11 @@ def generate_pdf():
         'apellido': request.form['apellido'],
         'email': request.form['email'],
         'fecha_nacimiento': request.form['fecha_nacimiento'],
-        'historial': request.form['historial'],
     }
 
     # Crear el PDF en memoria
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer)
+    pdf_bytes = BytesIO()
+    pdf = canvas.Canvas(pdf_bytes)
     
     # Agregar la información del paciente al PDF
     pdf.setFont("Helvetica", 12)
@@ -255,54 +261,47 @@ def generate_pdf():
     pdf.drawString(100, 720, f"Nombre y Apellido: {paciente_data['nombre']} {paciente_data['apellido']}")
     pdf.drawString(100, 690, f'nacimiento: {paciente_data["fecha_nacimiento"]}')
     pdf.drawString(100, 660, f'email: {paciente_data["email"]}')
-    pdf.drawString(100, 630, f'Historial: {paciente_data["historial"]}')
     
     # Agregar la receta médica al PDF (cambiar según la ubicación deseada)
     medicamento = request.form['medicamento']
     pdf.drawString(100, 600, f'Receta médica')
-    pdf.drawString(130, 570, medicamento)
+    pdf.drawString(130, 500, medicamento)
 
     # Guardar el estado del PDF y cerrar el objeto PDF
     pdf.showPage()
     pdf.save()
 
     # Configurar la respuesta para devolver el PDF en lugar de guardarlo en un archivo
-    buffer.seek(0)
-    response = make_response(buffer.read())
-    buffer.close()
+    pdf_bytes.seek(0)  # Asegúrate de que el cursor esté al principio del archivo
 
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=receta_medica.pdf'
+    # Guardar el PDF en un archivo temporal
+    pdf_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'receta_medica.pdf')
+    with open(pdf_filename, 'wb') as pdf_file:
+        pdf_file.write(pdf_bytes.read())
 
-    # Firmar el PDF
-    return response
+    # Redirigir a la otra función con la ruta del archivo PDF
+    return redirect(url_for('proceso', pdf_filename=pdf_filename))
 
-@app.route('/firmar', methods=['GET'])
-def firmar():
-    return render_template("formulario.html")
+@app.route('/proceso')
+def proceso():
+    return render_template("firmaDigital.html")
 
-@app.route('/procesar', methods=['POST'])
+@app.route('/procesar',  methods=['POST'])
 def procesar():
-    pdf = request.files.get("pdf")
+    pdf= os.path.join(app.config['UPLOAD_FOLDER'], 'receta_medica.pdf')
     firma = request.files.get("firma")
     contraseña = request.form.get("palabra_secreta")
     archivo_pdf_para_enviar_al_cliente = io.BytesIO()
-
     try:
-        datau, datas = firmar(contraseña, firma, pdf)
+        datau, datas = firmarcertificado(contraseña, firma, pdf)
         archivo_pdf_para_enviar_al_cliente.write(datau)
         archivo_pdf_para_enviar_al_cliente.write(datas)
         archivo_pdf_para_enviar_al_cliente.seek(0)
-
         return send_file(archivo_pdf_para_enviar_al_cliente, mimetype="application/pdf",
-                         download_name="firmado" + ".pdf",
-                         as_attachment=True)
+                        download_name="firmado" + ".pdf",
+                        as_attachment=True)
     except ValueError as e:
-        return "Error firmando: " + str(e) + ". Se recomienda revisar la contraseña y el certificado"
-
-
-
-
+        return "Error firmando: " + str(e) + " . Se recomienda revisar la contraseña y el certificado"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

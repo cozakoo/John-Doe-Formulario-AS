@@ -21,15 +21,19 @@
               <a href="{{ url_for('listar_pacientes') }}">Mis Datos</a>
             </li>
           {% endif %}
-          {% if session['user_type'] in ['admin', 'secretary'] %}
+
+          {% if session['user_type'] in ['admin', 'secretary', 'medic'] %}
             <li>
               <a href="{{ url_for('registrar_paciente') }}">Alta paciente</a>
             </li>
+            {% if session['user_type'] in ['admin'] %}
+              <li>
+                <a href="{{ url_for('create_user') }}">Crear Usuario</a>
+              </li>
+            {% endif %}
+
             <li>
               <a href="{{ url_for('listar_pacientes') }}">ver PACIENTES</a>
-            </li>
-            <li>
-              
             </li>
           {% endif %}
           <li>

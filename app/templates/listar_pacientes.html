@@ -17,7 +17,9 @@
           <th class="table-cell">Apellido</th>
           <th class="table-cell">Correo Electrónico</th>
           <th class="table-cell">Localidad</th>
-          <th class="table-cell"></th>
+          {% if session['user_type'] in ['medic'] %}
+            <th class="table-cell"></th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -28,9 +30,11 @@
             <td class="table-cell">{{ dato.apellido }}</td>
             <td class="table-cell">{{ dato.email }}</td>
             <td class="table-cell">{{ dato.localidad }}</td>
-            <td class="table-cell">
-              <a class="button is-primary" href="{{ url_for('recetaMedica', paciente_id = dato.dni) }}">Crear Receta Medica</a>
-            </td>
+            {% if session['user_type'] in ['medic'] %}
+              <td class="table-cell">
+                <a class="button is-primary" href="{{ url_for('recetaMedica', paciente_id = dato.dni) }}">Crear Receta Medica</a>
+              </td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>
