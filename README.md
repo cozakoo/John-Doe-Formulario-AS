@@ -33,7 +33,7 @@ Sigue estos pasos para instalar y configurar el proyecto:
     cd John-Doe-Formulario-AS.git
 3. Construye la imagen
     ```bash
-    docker build -t sistema-hospitalario-flask -f Dockerfile .
+    docker build -t sistema-hospitalario-flask .
 4. Ejecuta la aplicación en un contenedor:
     ```bash
     docker-compose up

@@ -1,10 +1,9 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- ... (tus metadatos y enlaces CSS) -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/login.css') }}" />
   </head>
+
   <body>
-    <!-- Agrega esto donde desees mostrar mensajes de error -->
     {% with messages = get_flashed_messages(with_categories = true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -13,16 +12,26 @@
       {% endif %}
     {% endwith %}
 
-    <h2>Login</h2>
-    <form method="post" action="{{ url_for('login') }}">
-      <!-- Campos de usuario y contraseña -->
-      <input type="text" name="username" placeholder="Usuario" required />
-      <input type="password" name="password" placeholder="Contraseña" required />
-      <!-- Botón de inicio de sesión -->
-      <button type="submit">Iniciar Sesión</button>
+    <form method="post" action="{{ url_for('login') }}" class="Form">
+      <h1 class="Form-title">Login</h1>
+      <p class="Form-description">Sistema Hospitalario</p>
+      <div class="Form-fields">
+        <input type="text" id="email" class="ControlInput ControlInput--email" name="username" required />
+
+        <label for="email" class="Control-label Control-label--email">Username</label>
+        <div class="Control-requirements Control-requirements--email">Debe ser un usuario valido</div>
+
+        <label for="show-password" class="Control-label Control-label--showPassword"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" class="svg-toggle-password" title="Toggle Password Security"></svg></label>
+
+        <input type="password" id="password" autocomplete="off" name="password" autocapitalize="off" autocorrect="off" required class="ControlInput ControlInput--password" />
+
+        <label for="password" class="Control-label Control-label--password">Password</label>
+
+        <button type="submit" class="Button Form-submit">Iniciar Sesión</button>
+        <p>
+          ¿No tienes una cuenta? <a href="{{ url_for('create_user') }}">Crear usuario</a>
+        </p>
+      </div>
     </form>
-    <p>
-      ¿No tienes una cuenta? <a href="{{ url_for('create_user') }}">Crear usuario</a>
-    </p>
   </body>
 </html>

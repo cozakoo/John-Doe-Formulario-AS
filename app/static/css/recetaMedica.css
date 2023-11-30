@@ -1,0 +1,25 @@
+.patient-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* Ajusta según sea necesario */
+}
+
+.patient-info label {
+    margin-right: 10px;
+    /* Espacio entre el label y el valor, ajusta según sea necesario */
+}
+
+/* static/styles.css */
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* Ajusta según sea necesario */
+}
+
+.form-row label {
+    margin-right: 10px;
+    /* Espacio entre el label y el valor, ajusta según sea necesario */
+}

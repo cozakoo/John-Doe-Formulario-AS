@@ -9,10 +9,11 @@ cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
-cryptography==41.0.5
+cryptography==41.0.7
 dnspython==2.4.2
 endesive==2.16
 Flask==2.3.3
+Flask-WTF==1.2.1
 idna==3.6
 itsdangerous==2.1.2
 Jinja2==3.1.2
@@ -36,3 +37,4 @@ typing_extensions==4.7.1
 tzdata==2023.3
 urllib3==2.1.0
 Werkzeug==2.3.7
+WTForms==3.1.1

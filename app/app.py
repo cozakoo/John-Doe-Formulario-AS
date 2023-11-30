@@ -1,4 +1,3 @@
-import cryptography
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import session, g, send_file, make_response
 
@@ -8,20 +7,21 @@ from PyPDF2 import PdfWriter, PdfReader
 
 from pymongo import MongoClient
 from model import Paciente
-import random
-import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
-import io 
-from io import BytesIO
-import os
-from reportlab.pdfgen import canvas
+
+import io , random, bcrypt, os
 
 from funciones import *
 
 app = Flask(__name__)
 
 app.secret_key = "clave_secreta"
-client = MongoClient(host='test_mongodb', port=27017, username='root', password='pass', authSource="admin")
+# Conexion con Docker
+# client = MongoClient(host='test_mongodb', port=27017, username='root', password='pass', authSource="admin")
+
+# Conexion local
+client = MongoClient(host='localhost', port=27017)
+
 db = client['asp_leg']
 mis_usuarios = db["usuarios"]
 mis_pacientes = db['pacientes']
@@ -276,6 +276,32 @@ def generate_pdf():
 
     # Firmar el PDF
     return response
+
+@app.route('/firmar', methods=['GET'])
+def firmar():
+    return render_template("formulario.html")
+
+@app.route('/procesar', methods=['POST'])
+def procesar():
+    pdf = request.files.get("pdf")
+    firma = request.files.get("firma")
+    contraseña = request.form.get("palabra_secreta")
+    archivo_pdf_para_enviar_al_cliente = io.BytesIO()
+
+    try:
+        datau, datas = firmar(contraseña, firma, pdf)
+        archivo_pdf_para_enviar_al_cliente.write(datau)
+        archivo_pdf_para_enviar_al_cliente.write(datas)
+        archivo_pdf_para_enviar_al_cliente.seek(0)
+
+        return send_file(archivo_pdf_para_enviar_al_cliente, mimetype="application/pdf",
+                         download_name="firmado" + ".pdf",
+                         as_attachment=True)
+    except ValueError as e:
+        return "Error firmando: " + str(e) + ". Se recomienda revisar la contraseña y el certificado"
+
+
+
 
 
 if __name__ == "__main__":
